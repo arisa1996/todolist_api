@@ -1,0 +1,129 @@
+{
+	"info": {
+		"_postman_id": "09de087f-4505-45a1-851d-b5484c80c045",
+		"name": "todoList-heroku",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "取得所有代辦",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://pacific-fjord-62685.herokuapp.com/todos",
+					"protocol": "https",
+					"host": [
+						"pacific-fjord-62685",
+						"herokuapp",
+						"com"
+					],
+					"path": [
+						"todos"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "新增單筆代辦",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"title\": \"today is 3/10\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://pacific-fjord-62685.herokuapp.com/todos",
+					"protocol": "https",
+					"host": [
+						"pacific-fjord-62685",
+						"herokuapp",
+						"com"
+					],
+					"path": [
+						"todos"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "編輯單筆代辦",
+			"request": {
+				"method": "PATCH",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"title\": \"is not\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://pacific-fjord-62685.herokuapp.com/todos/",
+					"protocol": "https",
+					"host": [
+						"pacific-fjord-62685",
+						"herokuapp",
+						"com"
+					],
+					"path": [
+						"todos",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "刪除單筆代辦",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "https://pacific-fjord-62685.herokuapp.com/todos/",
+					"protocol": "https",
+					"host": [
+						"pacific-fjord-62685",
+						"herokuapp",
+						"com"
+					],
+					"path": [
+						"todos",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "刪除所有代辦",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "https://pacific-fjord-62685.herokuapp.com/todos",
+					"protocol": "https",
+					"host": [
+						"pacific-fjord-62685",
+						"herokuapp",
+						"com"
+					],
+					"path": [
+						"todos"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
