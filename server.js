@@ -1,16 +1,10 @@
 const http = require('http');
 const { v4: uuidv4 } = require('uuid');
-const headers = require('./baseHeader');
-const errorHandle = require('./errorHandle');
+const HEADERS = require('./baseHeader');
+const { successHandle, errorHandle } = require('./responseHandle');
 const todos = [];
 
 const requestListener = (req, res)=> {
-    
-    const successObj = {
-        'status': 'success',
-        'data': todos
-    }
- 
     let body = '';
 
     req.on('data', chunk=>{
@@ -18,27 +12,23 @@ const requestListener = (req, res)=> {
     })
 
     if(req.url === '/todos' && req.method === 'GET'){
-        res.writeHead(200, headers);
-        res.write(JSON.stringify(successObj));
-        res.end();
+        successHandle(res, todos);
     }else if(req.url === '/todos' && req.method === 'POST'){
         req.on('end', ()=>{
             try{
                 const title = JSON.parse(body).title;
                 if(title !== undefined){
-                    const todo ={
+                    const todo = {
                         title,
                         'id': uuidv4()
                     }
                     todos.push(todo);
-                    res.writeHead(200, headers);
-                    res.write(JSON.stringify(successObj));
-                    res.end();
+                    successHandle(res, todos);
                 }else{
-                    errorHandle(res);
+                    errorHandle(res, 400, '資料不齊全');
                 }
             }catch(err){
-                errorHandle(res);
+                errorHandle(res, 400, '建立失敗');
             }
         });
     }else if(req.url.startsWith('/todos/') && req.method === 'PATCH'){
@@ -49,14 +39,12 @@ const requestListener = (req, res)=> {
                 const idx = todos.findIndex(e => e.id === id);
                 if(todo !== undefined && idx !== -1){
                     todos[idx].title = todo;
-                    res.writeHead(200, headers);
-                    res.write(JSON.stringify(successObj));
-                    res.end();
+                    successHandle(res, todos);
                 }else{
-                    errorHandle(res);
+                    errorHandle(res, 400, '欄位填寫錯誤或無此 ID');
                 }
             }catch(err){
-                errorHandle(res);
+                errorHandle(res, 400, '更新失敗');
             }
         });
     }else if(req.url.startsWith('/todos/') && req.method === 'DELETE'){
@@ -65,28 +53,19 @@ const requestListener = (req, res)=> {
         const idx = todos.findIndex(e => e.id === id);
         if(idx !== -1){
             todos.splice(idx, 1);
-            res.writeHead(200, headers);
-            res.write(JSON.stringify(successObj));
-            res.end();
+            successHandle(res, todos);
         }else{
-            errorHandle(res);
+            errorHandle(res, 400, '刪除失敗');
         }    
     }else if(req.url === '/todos' && req.method === 'DELETE'){
         // 刪除全部
         todos.length = 0;
-        res.writeHead(200, headers);
-        res.write(JSON.stringify(successObj));
-        res.end();
+        successHandle(res, todos);
     }else if(req.method === 'OPTIONS'){
-        res.writeHead(200, headers);
+        res.writeHead(200, HEADERS);
         res.end();
     }else{
-        res.writeHead(404, headers);
-        res.write(JSON.stringify({
-            'status': 'fail',
-            'message': '無此路由'
-        }));
-        res.end();
+        errorHandle(response, 404, 'Not found');
     }
 }
 
